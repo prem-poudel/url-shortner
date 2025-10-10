@@ -15,3 +15,13 @@ class ShortLinkForm(forms.ModelForm):
         labels = {
             'original_url': ''
         }
+
+class ShortLinkUpdateForm(forms.ModelForm):
+    class Meta:
+        model = ShortLink
+        fields = ['is_active']
+        widgets = {
+            'is_active': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            })
+        }

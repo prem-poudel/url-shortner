@@ -3,7 +3,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from src.apps.auth.models import User
 from .models import ShortLink
-from .forms import ShortLinkForm
+from .forms import ShortLinkForm, ShortLinkUpdateForm
 from .utils import generate_qr_code
 
 
@@ -88,3 +88,16 @@ class GenerateQRCodeView(LoginRequiredMixin, generic.View):
         link = get_object_or_404(ShortLink, id=link_id, user=request.user)
         generate_qr_code(link)
         return redirect(request.META.get('HTTP_REFERER', '/'))
+    
+class UpdateShortLinkView(LoginRequiredMixin, generic.View):
+    login_url = '/auth/login/'
+
+    def post(self, request, link_id, *args, **kwargs):
+        link = get_object_or_404(ShortLink, id=link_id, user=request.user)
+        form = ShortLinkUpdateForm(request.POST, instance=link)
+        print("Form Data:")
+        print(form.data)
+
+        if form.is_valid():
+            form.save()
+        return redirect('dashboard')
