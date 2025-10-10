@@ -1,8 +1,57 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from src.apps.auth.models import User
+from .models import ShortLink
+from .forms import ShortLinkForm
 
 
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
-    login_url = '/auth/login/' 
+    login_url = '/auth/login/'
     template_name = 'dashboard/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        links = ShortLink.objects.filter(user=user).order_by('-created_at')
+
+        
+
+        context.update({
+            'user': user,
+            'form': ShortLinkForm(),
+            'links': links,
+            'total_links': links.count(),
+            'total_clicks': sum(link.clicks for link in links),
+            'active_links': links.filter(is_active=True).count(),
+        })
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = ShortLinkForm(request.POST)
+        if form.is_valid():
+            original_url = form.cleaned_data['original_url']
+            ShortLink.create_short_link(user=request.user, original_url=original_url)
+            return redirect('dashboard')
+        else:
+            user = request.user
+            links = ShortLink.objects.filter(user=user).order_by('-created_at')
+            context = {
+                'user': user,
+                'form': form,
+                'links': links,
+                'total_links': links.count(),
+                'total_clicks': sum(link.clicks for link in links),
+                'active_links': links.filter(is_active=True).count(),
+            }
+            return render(request, self.template_name, context)
+
+
+class RedirectShortLinkView(generic.View):
+    def get(self, request, short_code, *args, **kwargs):
+        link = get_object_or_404(ShortLink, short_code=short_code)
+        if not getattr(link, 'is_active', True):
+            return render(request, 'dashboard/inactive_link.html', status=404)
+        link.increment_clicks()
+        return redirect(link.original_url)
