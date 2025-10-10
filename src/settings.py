@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
 INSTALLED_APPS += [
     "src.apps.auth",
+    "src.apps.dashboard",
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "authentication.User"
+
+LOGIN_URL = '/auth/login/'
