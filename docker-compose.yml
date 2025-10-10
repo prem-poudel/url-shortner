@@ -1,0 +1,12 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortner
+    volumes:
+      - .:/app
+    ports:
+      - "8020:8020"
+    env_file:
+      - .env

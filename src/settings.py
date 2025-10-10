@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,12 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-0%vr4$ky0mj+)y3i&vj#fwady=s6uemhf4326z*$)%pb-0@v*x"
+SECRET_KEY = config("SECRET_KEY", default="django-insecure-0%vr4$ky0mj+)y3i&vj#fwady=s6uemhf4326z*$)%pb-0@v*x")
+if len(str(SECRET_KEY)) < 32:
+    raise ValueError("The SECRET_KEY setting must be at least 32 characters long.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
 
 
 # Application definition
