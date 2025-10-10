@@ -127,3 +127,5 @@ LOGIN_URL = '/auth/login/'
 
 DOMAIN_NAME = config("DOMAIN_NAME", default="12.0.0.1:8000")
 PROTOCOL = config("PROTOCOL", default="http")
+
+CSRF_TRUSTED_ORIGINS =  config("CSRF_TRUSTED_ORIGINS", default=f"{PROTOCOL}://{DOMAIN_NAME}", cast=Csv())
