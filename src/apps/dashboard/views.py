@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from src.apps.auth.models import User
 from .models import ShortLink
 from .forms import ShortLinkForm
+from .utils import generate_qr_code
 
 
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
@@ -55,3 +56,35 @@ class RedirectShortLinkView(generic.View):
             return render(request, 'dashboard/inactive_link.html', status=404)
         link.increment_clicks()
         return redirect(link.original_url)
+
+
+class DeleteShortLinkView(LoginRequiredMixin, generic.View):
+    login_url = '/auth/login/'
+
+    def post(self, request, link_id, *args, **kwargs):
+        link = get_object_or_404(ShortLink, id=link_id, user=request.user)
+        link.delete()
+        return redirect('/')
+    
+
+class ShortLinkDetailView(LoginRequiredMixin, generic.TemplateView):
+    login_url = '/auth/login/'
+    template_name = 'dashboard/link_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        link = get_object_or_404(ShortLink, id=kwargs.get('link_id'), user=user)
+        context.update({
+            'user': user,
+            'link': link,
+        })
+        return context
+
+class GenerateQRCodeView(LoginRequiredMixin, generic.View):
+    login_url = '/auth/login/'
+
+    def post(self, request, link_id, *args, **kwargs):
+        link = get_object_or_404(ShortLink, id=link_id, user=request.user)
+        generate_qr_code(link)
+        return redirect(request.META.get('HTTP_REFERER', '/'))

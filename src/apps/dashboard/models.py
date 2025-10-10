@@ -12,6 +12,8 @@ class ShortLink(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     clicks = models.PositiveIntegerField(default=0)
 
+    qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
 
     class Meta:

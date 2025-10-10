@@ -53,6 +53,14 @@
             </div>
         </div>
 
+        <!-- Fun Fact -->
+        <div class="my-3 p-3 bg-light rounded-2 border-start border-4 border-primary">
+            <p class="mb-0 fw-semibold fs-6 text-dark">
+                Fun Fact: The short URL may seem long because of the domain name.
+            </p>
+        </div>
+
+
         <!-- Short Links List -->
         <div class="card shadow-sm">
             <div class="card-body">
@@ -103,8 +111,8 @@
                         <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('{{ request.get_host }}/{{ link.short_code }}')">
                             <i class="bi bi-clipboard"></i> Copy
                         </button>
-                        <a href="#" class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash"></i> Delete
+                        <a href="{% url 'detail_short_link' link.id %}" class="btn btn-sm btn-dark text-white">
+                            <i class="bi bi-pencil"></i> Detail
                         </a>
                     </div>
                 </td>
@@ -120,10 +128,6 @@
         {% endif %}
     </tbody>
 </table>
-
-                </div>
-                <button class="btn btn-secondary mt-3" id="update-links">Update Links</button>
-            </div>
         </div>
 
     </div>

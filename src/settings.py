@@ -124,3 +124,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "authentication.User"
 
 LOGIN_URL = '/auth/login/'
+
+DOMAIN_NAME = config("DOMAIN_NAME", default="12.0.0.1:8000")
+PROTOCOL = config("PROTOCOL", default="http")
