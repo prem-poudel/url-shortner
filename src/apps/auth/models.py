@@ -28,8 +28,8 @@ class UserManager(BaseUserManager):
 class User(AbstractUser, TimeStampedModel):
     email = models.EmailField(unique=True)
     username = None
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=30, blank=False)
+    last_name = models.CharField(max_length=30, blank=False)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

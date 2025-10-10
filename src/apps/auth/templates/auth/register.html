@@ -7,7 +7,7 @@
     <div class="card shadow-sm border-0 rounded-3">
         <div class="card-body p-4">
             <h3 class="text-center mb-4 text-primary fw-semibold">
-                Url Shortener — Register
+                ShortNScan: Register
             </h3>
 
             <form method="post">
@@ -15,6 +15,9 @@
                 {% for field in form %}
                     <div class="mb-3">
                         {{ field.label_tag }}
+                        {% if field.field.required %}
+                            <span class="text-danger">*</span>
+                        {% endif %}
                         {{ field }}
                         {% if field.errors %}
                             <div class="text-danger small mt-1">
@@ -23,6 +26,15 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+                <div class="alert alert-info small" role="alert">
+                    <strong>Password requirements:</strong>
+                    <ul class="mb-0 ps-3">
+                        <li>At least 8 characters</li>
+                        <li>Contains both letters and numbers</li>
+                        <li>Includes at least one uppercase letter</li>
+                        <li>Includes at least one special character (e.g., !@#$%)</li>
+                    </ul>
+                </div>
                 <button type="submit" class="btn btn-primary w-100">Register</button>
             </form>
 
