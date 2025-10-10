@@ -1,6 +1,7 @@
 from django.views import generic
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
+from django.shortcuts import redirect
 from .models import User
 from .forms import RegisterForm, LoginForm
 
@@ -27,4 +28,8 @@ class LoginView(generic.FormView):
     
     def form_invalid(self, form):
         return super().form_invalid(form)
-    
+
+class LogoutView(generic.View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect('/auth/login/')
