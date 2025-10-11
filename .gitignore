@@ -72,7 +72,6 @@ static/
 
 # dotenv
 .env
-.env.*
 
 # IDEs
 .idea/
@@ -91,3 +90,6 @@ Desktop.ini
 *.bak
 *.swp
 *.tmp
+
+# logs
+logs/

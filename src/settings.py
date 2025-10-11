@@ -129,3 +129,31 @@ DOMAIN_NAME = config("DOMAIN_NAME", default="12.0.0.1:8000")
 PROTOCOL = config("PROTOCOL", default="http")
 
 CSRF_TRUSTED_ORIGINS =  config("CSRF_TRUSTED_ORIGINS", default=f"{PROTOCOL}://{DOMAIN_NAME}", cast=Csv())
+
+# Cookie Settings
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=True, cast=bool)
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=True, cast=bool)
+
+
+# Logging Configuration
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "[{levelname}] {asctime} {name} {message}", "style": "{"},
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOG_DIR, "app.log"),
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {"handlers": ["file"], "level": "INFO", "propagate": True},
+    },
+}
