@@ -51,7 +51,10 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
 
 class RedirectShortLinkView(generic.View):
     def get(self, request, short_code, *args, **kwargs):
-        link = get_object_or_404(ShortLink, short_code=short_code)
+        try:
+            link = ShortLink.objects.get(short_code=short_code)
+        except ShortLink.DoesNotExist:
+            return render(request, '404.html', status=404)
         if not getattr(link, 'is_active', True):
             return render(request, 'dashboard/inactive_link.html', status=404)
         link.increment_clicks()
