@@ -1,4 +1,4 @@
-# URL Shortener
+# ShortNScan
 
 A simple Django-based URL shortener application.
 
