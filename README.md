@@ -3,7 +3,7 @@
 A simple Django-based URL shortener application.
 
 ## Demo Link
-[Live Demo](https://short-link.prempoudel.com.np/)
+[Live Demo](https://url-shortner-wehh.onrender.com/)
 
 ## Features
 
